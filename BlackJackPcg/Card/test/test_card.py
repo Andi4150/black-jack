@@ -1,4 +1,7 @@
 # import the packages required
+import io
+import sys
+
 from BlackJackPcg.Card import Card
 from BlackJackPcg.Utils import CardUtils
 from unittest import TestCase
@@ -99,15 +102,21 @@ class TestCard(TestCase):
         # assert
         self.assertTrue(num in CardUtils.get_possible_numbers())
 
-    # def test_card_show_func(self):
-    #     # arrange
-    #     # expect: The card is: 2SR
-    #     c = Card(CardUtils.get_possible_suits()[0], CardUtils.get_possible_colors()[0], CardUtils.get_possible_numbers()[0])
-    #     # act
-    #     txt = c.show()
-    #     txt_1 = c.show()[0:12]
-    #     print(txt_1)
-    #     txt_2 = str(txt)[-3]
-    #     # assert
-    #     self.assertTrue(txt_1 == 'The card is:')
+    def test_card_show_func(self):
+        # arrange
+        c = Card(CardUtils.get_possible_suits()[0], CardUtils.get_possible_colors()[0], CardUtils.get_possible_numbers()[0])
+        # In-memory text streams are available as StringIO objects. (https://docs.python.org/3/library/io.html)
+        # For strings, StringIO can be used like a file opened in text mode.
+        # initialise StringIO object
+        out = io.StringIO()
+        # https://docs.python.org/3/library/sys.html#sys.stdout
+        # stdout is used for the output of print() and expression statements and for the prompts of input();
+        sys.stdout = out
+        # act
+        c.show()
+        # getvalue() returns a str containing the entire contents of the buffer.
+        output = out.getvalue().strip()
+        # assert
+        self.assertTrue(output == "The card is: {}{}{}".format(c.number, c.suit, c.color))
+
 
