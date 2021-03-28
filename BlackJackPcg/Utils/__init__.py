@@ -6,9 +6,9 @@ class CardUtils:
     def get_possible_suits():
         return ["S", "C", "H", "D"]
 
-    @staticmethod
-    def get_possible_colors():
-        return ["R", "B"]
+    # @staticmethod
+    # def get_possible_colors():
+    #    return ["R", "B"]
 
     @staticmethod
     def get_possible_numbers():
