@@ -24,19 +24,17 @@ class Deck:
         for card in self.deck:
             card.show()
 
-    def get_next_card(self, num_cards):
+    def get_next_cards(self, num_cards):
         if not isinstance(num_cards, int):
             raise ValueError(
-                "The value passed on argument num_cards in function get_next_card,should be an integer. It received: {}"\
-                .format(type(num_cards))
+                "The value passed on argument num_cards in function get_next_card,should be an integer. It received: {}" \
+                    .format(type(num_cards))
             )
+        dealt_cards = []
         if 2 >= num_cards > 0:
-            dealt_cards = []
-            cards_to_deal = 00
-            while cards_to_deal < num_cards:
-                dealt_cards.append(self.deck[cards_to_deal])
-                self.deck.remove(self.deck[cards_to_deal])
-                cards_to_deal += 1
+            for i in range(num_cards):
+                dealt_cards.append(self.deck[i])
+                self.deck.remove(self.deck[i])
         else:
             raise RuntimeError("Number of cards must be greater than 0 and no more than 2")
         return dealt_cards
