@@ -65,3 +65,16 @@ class TestDeck(TestCase):
         output = out.getvalue().strip()
         # assert
         self.assertTrue(output.count("The card is:") == 2)
+
+    def test_get_points_func(self):
+        # arrange
+        d = Deck()
+        p = Person()
+        point = 0
+        n_cards = 2
+        # act
+        d.init_deck()
+        p.add_cards_to_hand(d.get_next_cards(2))
+        points = p.get_points()
+        # assert
+        self.assertTrue(points <= 22)
