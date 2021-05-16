@@ -52,7 +52,6 @@ class TestDeck(TestCase):
         else:
             self.assertTrue(False)
 
-
     def test_get_deck(self):
         flag = True
         # arrange
@@ -125,7 +124,7 @@ class TestDeck(TestCase):
         d = Deck()
         d.init_deck()
         # act
-        cards = d.get_next_card(2)
+        cards = d.get_next_cards(2)
         # asset
         self.assertTrue(len(cards) == 2)
 
@@ -134,7 +133,7 @@ class TestDeck(TestCase):
         d = Deck()
         d.init_deck()
         # act
-        cards = d.get_next_card(2)
+        cards = d.get_next_cards(2)
         # asset
         self.assertTrue(len(d.deck) == 50)
 
@@ -143,7 +142,7 @@ class TestDeck(TestCase):
         d = Deck()
         d.init_deck()
         # act
-        cards = d.get_next_card(2)
+        cards = d.get_next_cards(2)
         # asset
         for c in d.deck:
             for card in cards:
@@ -156,7 +155,7 @@ class TestDeck(TestCase):
         d.init_deck()
         # act
         try:
-            cards = d.get_next_card(4)
+            cards = d.get_next_cards(4)
         except RuntimeError:
             flag = False
         # assert - this should fail
@@ -172,7 +171,7 @@ class TestDeck(TestCase):
         d.init_deck()
         # act
         try:
-            cards = d.get_next_card(-1)
+            cards = d.get_next_cards(-1)
         except RuntimeError:
             flag = False
         # assert - this should fail
@@ -181,7 +180,6 @@ class TestDeck(TestCase):
         else:
             self.assertFalse(False)
 
-
     def test_get_next_card_non_integer(self):
         # arrange
         flag = True
@@ -189,7 +187,7 @@ class TestDeck(TestCase):
         d.init_deck()
         # act
         try:
-            cards = d.get_next_card(1.5)
+            cards = d.get_next_cards(1.5)
         except ValueError:
             flag = False
         # assert - this should fail
