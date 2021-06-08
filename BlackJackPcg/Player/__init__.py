@@ -39,14 +39,24 @@ class Person(ABC):
                 break
             card.show()
 
+    def get_points(self):
+        sum_points = 0
+        sum_ace = 0
+        for c in self.hand:
+            if c.get_points() == 11:
+                sum_ace += 1
+            else:
+                sum_points += c.get_points()
+        if sum_points + sum_ace * 11 < 21:
+            return sum_points + sum_ace * 11
+        elif sum_points + 11 + sum_ace - 1 < 21:
+            return sum_points + 11 + sum_ace - 1
+        else:
+            return sum_points + sum_ace
 
-class Player(Person):
+    @abstractmethod
+    def pick_a_card_decision(self):
+        pass
 
-    def __init__(self, user_name):
-        Person.__init__(self, user_name)
 
 
-class Dealer(Person):
-
-    def __init__(self):
-        Person.__init__(self, 'Dealer')

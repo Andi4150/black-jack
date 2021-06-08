@@ -76,4 +76,26 @@ class TestCard(TestCase):
         # assert
         self.assertTrue(output == "The card is: {}{}".format(c.number, c.suit))
 
+    def test_get_points_func(self):
+        # arrange
+        c = Card(CardUtils.get_possible_suits()[0], 'A')
+        # act
+        num = c.get_points()
+        # assert
+        self.assertTrue(num == 11)
 
+    def test_get_points_func(self):
+        # arrange
+        c = Card(CardUtils.get_possible_suits()[0], 'K')
+        # act
+        num = c.get_points()
+        # assert
+        self.assertTrue(num == 10)
+
+    def test_get_points_func(self):
+        # arrange
+        c = Card(CardUtils.get_possible_suits()[0], '5')
+        # act
+        num = c.get_points()
+        # assert
+        self.assertTrue(num == 5)
