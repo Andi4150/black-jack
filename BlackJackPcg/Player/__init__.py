@@ -59,23 +59,4 @@ class Person(ABC):
         pass
 
 
-class Player(Person):
 
-    def __init__(self, user_name):
-        Person.__init__(self, user_name)
-
-    def pick_a_card_decision(self):
-        dec = input('press 0 if you do not want a new card, or 1 if you want a new card')
-        return dec
-
-
-class Dealer(Person):
-
-    def __init__(self):
-        Person.__init__(self, 'Dealer')
-
-    def pick_a_card_decision(self):
-        if self.get_points() < 17:
-            return True
-        else:
-            return False

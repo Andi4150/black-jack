@@ -1,7 +1,9 @@
 from unittest import TestCase
 from BlackJackPcg.Card import Card
 from BlackJackPcg.Deck import Deck
-from BlackJackPcg.Player import Person, Player, Dealer
+from BlackJackPcg.Player import Person
+from BlackJackPcg.Player.Players import Player
+from BlackJackPcg.Player.Dealer import Dealer
 import io
 import sys
 import mock
@@ -48,21 +50,6 @@ class TestDeck(TestCase):
             self.assertTrue(False)
         else:
             self.assertTrue(True)
-
-    # def test_add_cards_to_dealer(self):
-    #     # arrange
-    #     d = Deck()
-    #     d.init_deck()
-    #     p = Dealer()
-    #     # act
-    #     init_len = len(p.get_hand())
-    #     p.add_cards_to_hand(d.get_next_cards(1))
-    #     new_len = len(p.get_hand())
-    #     # assert
-    #     if init_len + 1 != new_len:
-    #         self.assertTrue(False)
-    #     else:
-    #         self.assertTrue(True)
 
     def test_show_n_cards(self):
         # arrange
@@ -126,6 +113,21 @@ class TestDeck(TestCase):
         with mock.patch('builtins.input', return_value=expected_output):
             # assert
             self.assertTrue(p.pick_a_card_decision() == expected_output)
+
+    def test_pick_a_card_decision_player_gives_error(self):
+        import io
+        import contextlib
+        # arrange
+        p = Player("Bill")
+        # act
+        # make the input so it will be three and then a string
+        with mock.patch("builtins.input", side_effect=[3, 'str', 1]):
+            with io.StringIO() as buffer:
+                # redirect the stdout to the buffer - whatever goes to stdout will go to buffer
+                with contextlib.redirect_stdout(buffer):
+                    p.pick_a_card_decision()
+                    printed_text = buffer.getvalue()
+                self.assertTrue(printed_text.count("Incorrect input! Do you want a card? Please enter 0 for no, 1 for yes") == 2)
 
     def test_pick_a_card_decision_dealer_no(self):
         # arrange
