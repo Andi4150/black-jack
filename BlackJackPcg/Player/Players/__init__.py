@@ -8,7 +8,6 @@ class Player(Person):
 
     def pick_a_card_decision(self):
         # initiate variables
-        choice = False
         dec = None
         incorrect_input = True
         while incorrect_input:  # check if correct value given
@@ -16,7 +15,6 @@ class Player(Person):
             try:
                 dec = int(input('Enter 0 if you do not want a new card, or 1 if you want a new card'))
                 if dec == 1:
-                    choice = True  # change choice from initiated values
                     incorrect_input = False  # confirm exit of loop
                 elif dec == 0:
                     incorrect_input = False  # confirm exit of loop
