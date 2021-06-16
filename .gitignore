@@ -6,6 +6,8 @@
 # gitignore template for Jupyter Notebooks
 # website: http://jupyter.org/
 
+*_temp.py
+
 # remove any csv or dat file:
 *.csv
 *.dat
