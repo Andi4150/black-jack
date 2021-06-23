@@ -53,6 +53,29 @@ class Game:
     def add_dealer(self):
         self.players.append(Dealer())
 
+    def number_of_players(self, input_count, limit):
+        n_players = 0
+        while input_count < limit:
+            try:
+                n_players = int(input('How many players are there, 1 or 2?'))
+                return n_players
+            except ValueError as e:
+                input_count += 1
+                print("Incorrect input! How many players are there, 1 or 2?")
+        return 0
+
+    def new_game_decision(self, ng_count, limit):
+        if ng_count < limit:
+            try:
+                new_game = int(input('Play again? 1 for yes, 0 for no'))
+                return new_game
+            except ValueError as e:
+                ng_count += 1
+                print("Incorrect input! Play again? 1 for yes, 0 for no")
+        else:
+            return 0
+
+
     def check_if_dealt_hand_wins(self):
         # check for a winner
         winners = []
@@ -83,6 +106,7 @@ class Game:
         # initiate the variables
         max_score_pos = 0
         max_score = 0
+        draw_score_pos = []
         # loop through the players
         for i, p in enumerate(self.get_players()):
             # calculate the score
@@ -96,14 +120,24 @@ class Game:
                 max_score = score
                 max_score_pos = i
             # otherwise skip this player
+            elif max_score == score:
+                draw_score_pos = [max_score_pos, i]
+            # otherwise skip this player
             else:
                 pass  # is an else needed?
         # return the winning statement
         if max_score == 0:
             return 'something went wrong - nobody has won'
         else:
-            return ('Winner of the game was {} with {} points'.format(self.get_players()[max_score_pos].get_user_name(),
+            if len(draw_score_pos) == 0:
+                return (
+                    'Winner of the game was {} with {} points'.format(self.get_players()[max_score_pos].get_user_name(),
                                                                       self.get_players()[max_score_pos].get_points()))
+            else:
+                return ('Winners of the game are {} with {} points'.format(
+                    self.get_players()[draw_score_pos[0]].get_user_name(),
+                    self.get_players()[draw_score_pos[1]].get_user_name(),
+                    self.get_players()[max_score_pos].get_points()))
 
     def play_game(self):
         # add a dealer to the game
