@@ -4,4 +4,5 @@ class ProgramUtils:
         self.num_of_tries = 3
 
     def get_num_of_tries(self):
-        return self.num_of_tries
+        return 3
+    
