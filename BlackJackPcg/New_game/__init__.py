@@ -23,7 +23,18 @@ class GameV2:
         return self.dealer
 
     def number_of_players(self):
-        pass
+        n_players = 0
+        input_count = 0
+        while input_count < self.pu.get_num_of_tries():
+            if input_count == self.pu.get_num_of_tries()-1:
+                print("You have one more try before no players are added to the game.")
+            try:
+                n_players = int(input('How many players will join the game, 1 or 2?'))
+                return n_players
+            except ValueError as e:
+                input_count += 1
+                print("Incorrect input! How many players are there, 1 or 2?")
+        return n_players
 
     def add_player(self, new_user):
         list_of_players = self.get_players()
@@ -34,6 +45,48 @@ class GameV2:
             list_of_players.append(new_user)
         return list_of_players
 
+    def check_winner(self):
+        # initiate variables
+        winner_index_list = []
+        score_21_list = []
+        dealers_score = self.get_dealer().get_points()
+        if dealers_score > 21:
+            print("Dealer's hand went bust")
+        # loop through the players
+        for i, p in enumerate(self.get_players()):
+            # calculate the score
+            score = p.get_points()
+            print('{} scored {}'.format(p.get_user_name(), score))
+            # check if hand can be considered
+            if score > 21:
+                print("{}'s hand went bust".format(p.get_user_name()))
+            # if score ok, check if it is highest
+            elif dealers_score < score:
+                winner_index_list.append(i)
+            # otherwise skip this player
+            elif dealers_score == score:
+                print("{}'s hand scored same as Dealer - no winner!".format(p.get_user_name()))
+        return winner_index_list
+
+    def check_for_21_score(self):
+        # initiate variables
+        score_21_list = []
+        dealers_score = self.get_dealer().get_points()
+        if dealers_score == 21:
+            print("Dealer's hand went bust")
+            score_21_list.append(-1)
+        # loop through the players
+        for i, p in enumerate(self.get_players()):
+            # calculate the score
+            score = p.get_points()
+            print('{} scored {}'.format(p.get_user_name(), score))
+            # check if hand can be considered
+            if score > 21:
+                print("{}'s hand went bust".format(p.get_user_name()))
+            # if score ok, check if it is highest
+            elif score == 21:
+                score_21_list.append(i)
+
     def play_game(self):
         # deal cards to players
         d = self.get_dealer()
@@ -41,6 +94,7 @@ class GameV2:
         for p in self.get_players():
             p.add_cards_to_hand(2)
         # check for winner/bust
+
         # add to winners or continue
 
         for p in self.get_players():

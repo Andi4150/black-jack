@@ -62,7 +62,7 @@ class Game:
             except ValueError as e:
                 input_count += 1
                 print("Incorrect input! How many players are there, 1 or 2?")
-        return 0
+        return n_players
 
     def new_game_decision(self, ng_count, limit):
         if ng_count < limit:
