@@ -1,6 +1,6 @@
 from BlackJackPcg.Deck import Deck
 from BlackJackPcg.Player.Dealer import Dealer
-
+from BlackJackPcg.Player.Players import Player
 
 class GameV2:
 
@@ -37,13 +37,15 @@ class GameV2:
         return n_players
 
     def add_player(self, new_user):
-        list_of_players = self.get_players()
-        if new_user in list_of_players:
-            print('{} is already in the game. No-one has been added'.format(new_user))
-        else:
+        new_player_flag = True
+        for p in self.get_players():
+            if new_user == p.get_user_name():
+                new_player_flag = False
+        if new_player_flag:
             print('Adding {} to the list of players'.format(new_user))
-            list_of_players.append(new_user)
-        return list_of_players
+            self.get_players().append(Player(new_user))
+        else:
+            print('{} is already in the game. No-one has been added'.format(new_user))
 
     def check_winner(self):
         # initiate variables
@@ -86,6 +88,7 @@ class GameV2:
             # if score ok, check if it is highest
             elif score == 21:
                 score_21_list.append(i)
+        return score_21_list
 
     def play_game(self):
         # deal cards to players
@@ -94,7 +97,6 @@ class GameV2:
         for p in self.get_players():
             p.add_cards_to_hand(2)
         # check for winner/bust
-
         # add to winners or continue
 
         for p in self.get_players():
