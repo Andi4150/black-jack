@@ -1,43 +1,19 @@
-from BlackJackPcg.New_game import GameV2
-
-# if __name__ == '__main__':
-#     game_flag = True
-#     while game_flag:
-#         g = Game()
-#         g.__init__()
-#         input_count = 0
-#         n_players = g.number_of_players(input_count, 3)
-#
-#         for i in range(n_players):
-#             p_detail = input('Please provide players name')
-#             g.add_player(p_detail)
-#
-#         print(p.get_username() for p in g.get_players())
-#         print(g.get_deck())
-#         print(g.play_game())
-#
-#         ng_count = 0
-#         new_game = g.new_game_decision(ng_count, 3)
-#         if new_game == 0:
-#             game_flag = False
+from BlackJackPcg.Game import Game
+from BlackJackPcg.Player.Players import Player
 
 if __name__ == '__main__':
     game_flag = True
     while game_flag:
-        g = GameV2()
-        g.__init__()
-        # input_count = 0
-        # n_players = g.number_of_players(input_count, 3)
+        g = Game()
+        g.add_players('user_1')
+        g.add_players('user_2')
+        g.deck.shuffle_deck()
+        for player in g.get_players():
+            dealt_cards = g.deck.get_next_cards(2)
+            player.add_cards_to_hand(dealt_cards)
+        dealt_cards = g.deck.get_next_cards(2)
+        g.dealer.add_cards_to_hand(dealt_cards)
+        scores = g.players_turn()
+        print(scores)
+        game_flag = False
 
-        for i in range(2):
-            p_detail = input('Please provide players name')
-            g.add_player(p_detail)
-
-        print(p.get_username() for p in g.get_players())
-        # print(g.get_deck())
-        # print(g.play_game())
-
-        # ng_count = 0
-        # new_game = g.new_game_decision(ng_count, 3)
-        # if new_game == 0:
-        #     game_flag = False
