@@ -37,6 +37,9 @@ class Person(ABC):
     def get_winner_streak(self):
         return self.winner_streak
 
+    def reset_hand(self):
+        self.hand = []
+
     def show_n_cards(self, n_cards):
         for i, card in enumerate(self.hand):
             if i == n_cards:
