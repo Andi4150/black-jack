@@ -45,9 +45,11 @@ class Game:
         for player in self.list_players:
             # show points and cards
             number_of_cards = len(player.get_hand())
-            print(player.get_points())
+            print('{} has a score of:'.format(player.get_user_name()), player.get_points())
+            print('{} has a hand of:'.format(player.get_user_name()))
             player.show_n_cards(number_of_cards)
-            print('Dealer cards: {}'.format(self.dealer.show_n_cards(1)))
+            print('Dealer cards:')
+            self.dealer.show_n_cards(1)
             # ask for game decision
             # add cards if wanted
             while player.pick_a_card_decision() == 1:
@@ -79,4 +81,14 @@ class Game:
                 self.dealer.get_hand()[-1].show()
 
     def calculate_winner(self):
-        pass
+        dealer_score = self.dealer.get_points()
+        for player, score in self.score_dict.items():
+            if score > 21:
+                print("{}'s hand went bust - dealer wins!".format(player.get_user_name()))
+                self.dealer.winner_streak += 1
+            elif score > dealer_score:
+                print("{}'s hand scored {} so they win!".format(player.get_user_name(), score))
+                player.winner_streak += 1
+            else:
+                print("{}'s hand scored {} so dealer wins with a score of {}!".format(player.get_user_name(), score, dealer_score))
+                self.dealer.winner_streak += 1

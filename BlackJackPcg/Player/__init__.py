@@ -14,6 +14,7 @@ class Person(ABC):
             raise RuntimeError("The user name passed to the player is not valid as it is {}".format(type(user_name)))
         else:
             self.user_name = user_name
+        self.winner_streak = 0
 
     def add_cards_to_hand(self, cards):
         """
@@ -32,6 +33,9 @@ class Person(ABC):
 
     def get_user_name(self):
         return self.user_name
+
+    def get_winner_streak(self):
+        return self.winner_streak
 
     def show_n_cards(self, n_cards):
         for i, card in enumerate(self.hand):

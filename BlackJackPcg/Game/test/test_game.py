@@ -1,4 +1,6 @@
 from unittest import TestCase
+
+from BlackJackPcg.Card import Card
 from BlackJackPcg.Game import Game
 from BlackJackPcg.Player.Players import Player
 
@@ -8,6 +10,8 @@ import sys
 
 
 # from BlackJackPcg.Utils import CardUtils
+from BlackJackPcg.Utils import CardUtils
+
 
 class TestGame(TestCase):
 
@@ -68,9 +72,68 @@ class TestGame(TestCase):
         # act
         g.add_players('user_2')
         with mock.patch("builtins.input", side_effect=[0, 0]):
-            scores = g.players_turn()
+            g.players_turn()
         # assert
-        if scores.get(p) == 0:
+        if g.score_dict.get(p) == 0:
+            self.assertTrue(True)
+        else:
+            self.assertTrue(False)
+
+    def test_dealer_turn(self):
+        # arrange
+        p = Player('user_1')
+        c1 = Card(CardUtils.get_possible_suits()[0], '9')
+        c2 = Card(CardUtils.get_possible_suits()[0], '10')
+        p.add_cards_to_hand(([c1, c2]))
+        g = Game([p])
+        # act
+        with mock.patch("builtins.input", side_effect=[0]):
+            g.players_turn()
+            g.dealer_turn()
+        # assert
+        if g.dealer.get_points() > 17:
+            self.assertTrue(True)
+        else:
+            self.assertTrue(False)
+
+    def test_calculate_win(self):
+        # arrange
+        p = Player('user_1')
+        c1 = Card(CardUtils.get_possible_suits()[0], '8')
+        c2 = Card(CardUtils.get_possible_suits()[0], '10')
+        c3 = Card(CardUtils.get_possible_suits()[0], 'J')
+        c4 = Card(CardUtils.get_possible_suits()[0], '9')
+        p.add_cards_to_hand(([c1, c2]))
+        g = Game([p])
+        g.dealer.add_cards_to_hand([c3, c4])
+        # act
+        with mock.patch("builtins.input", side_effect=[0]):
+            g.players_turn()
+            g.dealer_turn()
+            g.calculate_winner()
+        # assert
+        if g.dealer.winner_streak > 1:
+            self.assertTrue(True)
+        else:
+            self.assertTrue(False)
+
+    def test_calculate_win(self):
+        # arrange
+        p = Player('user_1')
+        c1 = Card(CardUtils.get_possible_suits()[0], 'Q')
+        c2 = Card(CardUtils.get_possible_suits()[0], '10')
+        c3 = Card(CardUtils.get_possible_suits()[0], 'J')
+        c4 = Card(CardUtils.get_possible_suits()[0], '8')
+        p.add_cards_to_hand(([c1, c2]))
+        g = Game([p])
+        g.dealer.add_cards_to_hand([c3, c4])
+        # act
+        with mock.patch("builtins.input", side_effect=[0]):
+            g.players_turn()
+            g.dealer_turn()
+            g.calculate_winner()
+        # assert
+        if p.get_winner_streak() == 1:
             self.assertTrue(True)
         else:
             self.assertTrue(False)
