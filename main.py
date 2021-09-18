@@ -3,20 +3,14 @@ from BlackJackPcg.Player.Players import Player
 
 if __name__ == '__main__':
     game_flag = True
+    g = Game()
+    g.add_players('user_1')
+    g.add_players('user_2')
     while game_flag:
-        g = Game()
-        g.add_players('user_1')
-        g.add_players('user_2')
-        g.deck.shuffle_deck()
-        for player in g.get_players():
-            dealt_cards = g.deck.get_next_cards(2)
-            player.add_cards_to_hand(dealt_cards)
-        dealt_cards = g.deck.get_next_cards(2)
-        g.dealer.add_cards_to_hand(dealt_cards)
-        scores = g.players_turn()
+        g.start_game()
+        g.players_turn()
         g.calculate_winner()
         for player in g.get_players():
             print(player.get_user_name(), ' : ', player.get_winner_streak())
-
-        game_flag = False
+        game_flag = g.newGameDecision()
 

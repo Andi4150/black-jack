@@ -1,3 +1,4 @@
+from BlackJackPcg import ProgramUtils
 from BlackJackPcg.Player.Dealer import Dealer
 from BlackJackPcg.Player.Players import Player
 from BlackJackPcg.Deck import Deck
@@ -8,8 +9,8 @@ class Game:
     def __init__(self, list_players=[]):
         self.dealer = Dealer()
         self.deck = Deck()
-        self.deck.init_deck()
         self.score_dict = {}
+        self.pu = ProgramUtils()
         if len(list_players) > 0:
             self.list_players = list_players
         else:
@@ -23,6 +24,17 @@ class Game:
 
     def get_deck(self):
         return self.deck
+
+    def start_game(self):
+        print('New game starting...')
+        self.deck.init_deck()
+        print('Shuffling deck')
+        self.deck.shuffle_deck()
+        for player in self.get_players():
+            print('New hands dealt...')
+            player.reset_hand()
+            player.add_cards_to_hand(self.deck.get_next_cards(2))
+        self.dealer.add_cards_to_hand(self.deck.get_next_cards(2))
 
     def add_players(self, new_player_name):
         current_players = []
@@ -86,9 +98,39 @@ class Game:
             if score > 21:
                 print("{}'s hand went bust - dealer wins!".format(player.get_user_name()))
                 self.dealer.winner_streak += 1
+            elif dealer_score > 21:
+                print('dealers hand went bust - {} wins with score of {}'.format(player.get_user_name(), score))
+                player.winner_streak += 1
             elif score > dealer_score:
                 print("{}'s hand scored {} so they win!".format(player.get_user_name(), score))
                 player.winner_streak += 1
             else:
-                print("{}'s hand scored {} so dealer wins with a score of {}!".format(player.get_user_name(), score, dealer_score))
+                print("{}'s hand scored {} so dealer wins with a score of {}!".format(player.get_user_name(), score,
+                                                                                      dealer_score))
                 self.dealer.winner_streak += 1
+
+    def newGameDecision(self):
+        new_game = False
+        incorrect_input = True
+        count = 0
+        while incorrect_input:  # check if correct value given
+            if count == self.pu.get_num_of_tries():
+                print("You tried the wrong value too many times.")
+                return -1
+            else:
+                # collect input from user
+                try:
+                    dec = int(input('Enter 0 if you do not want to play again, or 1 if you want to play again'))
+                    if dec == 1:
+                        new_game = True
+                        incorrect_input = False  # confirm exit of loop
+                    elif dec == 0:
+                        incorrect_input = False  # confirm exit of loop
+                    else:
+                        count += 1
+                        print("Incorrect input! Use 1 or 0")
+                # catch error if input invalid
+                except ValueError as e:
+                    count += 1
+                    print("Incorrect input! Use 1 or 0")
+        return new_game
