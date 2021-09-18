@@ -60,6 +60,8 @@ class GameV2:
             # check if hand can be considered
             if score > 21:
                 print("{}'s hand went bust".format(p.get_user_name()))
+                # remove from list of players
+                self.get_players().remove(p)
             # if score ok, check if it is highest
             elif dealers_score < score:
                 winner_index_list.append(i)
@@ -83,27 +85,55 @@ class GameV2:
             # check if hand can be considered
             if score > 21:
                 print("{}'s hand went bust".format(p.get_user_name()))
+                # remove from list of players
+                self.get_players().remove(p)
             # if score ok, check if it is highest
             elif score == 21:
                 score_21_list.append(i)
+        return score_21_list
 
     def play_game(self):
+        # shuffle deck
+        self.get_deck().shuffle_deck()
         # deal cards to players
         d = self.get_dealer()
         d.add_cards_to_hand(1)
         for p in self.get_players():
             p.add_cards_to_hand(2)
         # check for winner/bust
-
-        # add to winners or continue
-
+        if len(self.check_for_21_score) > 0:
+            for winner in self.check_for_21_score():
+                if winner == -1:
+                    print('The dealer won with score of 21')
+                else:
+                    print('The winner(s) is {} with a score of 21'.format(self.get_players()[winner]))
+            return 0
+        else:
+            print('No-one reached 21 with their dealt hand')
         for p in self.get_players():
             # collect decision from current player
-            if p.pick_a_card_decision() == 1:
-                p.add_cards_to_hand(2)
-            else:
-                print()
-        # check if bust
-        # repeat until bust or decision is no
+            players_turn = True
+            # repeat until bust or decision is no
+            while players_turn:
+                if p.pick_a_card_decision() == 1:
+                    p.add_cards_to_hand(1)
+                    # check if bust
+                    if p.get_points > 21:
+                        print("{}'s hand went bust".format(p.get_user_name()))
+                        # remove from list of players
+                        self.get_players().remove(p)
+                        players_turn = False
+                else:
+                    players_turn = False
         # repeat for dealer
+        if d.pick_a_card_decision() == 1:
+            d.add_cards_to_hand(1)
+            # check if bust
+            if d.get_points > 21:
+                print("Dealer's hand went bust")
         # check for winners
+        list_of_winner_indexes = self.check_winner()
+        if list_of_winner_indexes > 0:
+            for champion in list_of_winner_indexes:
+                print('{} beat the dealer!'.format(self.get_players()[champion]))
+        
