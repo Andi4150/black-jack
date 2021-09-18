@@ -43,7 +43,7 @@ class TestGame(TestCase):
         g = Game([p])
         dealer = g.get_dealer()
         # assert
-        if dealer == g.d:
+        if dealer == g.dealer:
             self.assertTrue(True)
         else:
             self.assertTrue(False)

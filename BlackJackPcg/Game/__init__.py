@@ -6,16 +6,17 @@ from BlackJackPcg.Deck import Deck
 class Game:
 
     def __init__(self, list_players=[]):
-        self.d = Dealer()
+        self.dealer = Dealer()
         self.deck = Deck()
         self.deck.init_deck()
+        self.score_dict = {}
         if len(list_players) > 0:
             self.list_players = list_players
         else:
             self.list_players = []
 
     def get_dealer(self):
-        return self.d
+        return self.dealer
 
     def get_players(self):
         return self.list_players
@@ -40,27 +41,42 @@ class Game:
 
     def players_turn(self):
         # initial cards dealt already
-        score_dict = {}
         # loop through players
         for player in self.list_players:
             # show points and cards
             number_of_cards = len(player.get_hand())
             print(player.get_points())
             player.show_n_cards(number_of_cards)
+            print('Dealer cards: {}'.format(self.dealer.show_n_cards(1)))
             # ask for game decision
             # add cards if wanted
             while player.pick_a_card_decision() == 1:
                 dealt_cards = self.deck.get_next_cards(1)
                 player.add_cards_to_hand(dealt_cards)
-                print(player.get_hand()[-1])
+                player.get_hand()[-1].show()
                 # check if bust
-            if player.get_points() > 21:
-                print('Players hand went bust')
-                break
-            elif player.get_points() == 21:
+                if player.get_points() > 21:
+                    print('Players hand went bust')
+                    break
+            if player.get_points() == 21:
                 print('Player has scored 21')
             else:
-                print("{} chose to stand with score {} - moving onto next player's turn.\n".format(player.get_user_name(), player.get_points()))
-            score_dict[player] = player.get_points()
+                print(
+                    "{} chose to stand with score {} - moving onto next player's turn.\n".format(player.get_user_name(),
+                                                                                                 player.get_points()))
+            self.score_dict[player] = player.get_points()
         # repeat
-        return score_dict
+
+    def dealer_turn(self):
+        number_of_cards = len(self.dealer.get_hand())
+        self.dealer.show_n_cards(number_of_cards)
+        if min(self.score_dict.values()) > 21:
+            print("The dealer won as all players had scores over 21.\n")
+        else:
+            while self.dealer.pick_a_card_decision() == 1:
+                dealt_cards = self.deck.get_next_cards(1)
+                self.dealer.add_cards_to_hand(dealt_cards)
+                self.dealer.get_hand()[-1].show()
+
+    def calculate_winner(self):
+        pass
