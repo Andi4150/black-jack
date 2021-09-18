@@ -14,6 +14,9 @@ if __name__ == '__main__':
         dealt_cards = g.deck.get_next_cards(2)
         g.dealer.add_cards_to_hand(dealt_cards)
         scores = g.players_turn()
-        print(scores)
+        g.calculate_winner()
+        for player in g.get_players():
+            print(player.get_user_name(), ' : ', player.get_winner_streak())
+
         game_flag = False
 
