@@ -65,6 +65,19 @@ class TestGame(TestCase):
         else:
             self.assertTrue(False)
 
+    def test_username_input(self):
+        # arrange
+        g = Game()
+        # act
+        with mock.patch("builtins.input", side_effect=['Andi']):
+            g.add_players(g.request_player_name())
+        p_list = g.get_players()
+        # assert
+        if p_list[0].get_user_name() == 'Andi':
+            self.assertTrue(True)
+        else:
+            self.assertTrue(False)
+
     def test_player_turn(self):
         # arrange
         p = Player('user_1')
@@ -86,6 +99,7 @@ class TestGame(TestCase):
         c2 = Card(CardUtils.get_possible_suits()[0], '10')
         p.add_cards_to_hand(([c1, c2]))
         g = Game([p])
+        g.start_game()
         # act
         with mock.patch("builtins.input", side_effect=[0]):
             g.players_turn()

@@ -36,6 +36,44 @@ class Game:
             player.add_cards_to_hand(self.deck.get_next_cards(2))
         self.dealer.add_cards_to_hand(self.deck.get_next_cards(2))
 
+    def new_player_decision_function(self):
+        new_user_input_count = 0
+        new_player_flag = True
+        p_list = self.get_players()
+        while new_player_flag:
+            if new_user_input_count < self.pu.get_num_of_tries():
+                new_player_decision = -1
+                print('Current players are: ')
+                for player_index in p_list:
+                    print(player_index.get_user_name())
+                try:
+                    new_player_decision = int(input('Enter 1 if you want to add a player, or 0 if you do not'))
+                # catch error if input invalid
+                except ValueError as e:
+                    new_user_input_count += 1
+                    print("Incorrect input! Do you want a new player? Please enter 0 for no, 1 for yes")
+            else:
+                print('Too many incorrect inputs. Game over!')
+                exit(1)
+            if new_player_decision == 1:
+                self.add_players(self.request_player_name())
+            elif new_player_decision == 0:
+                new_player_flag = False
+
+    def request_player_name(self):
+        new_username_count = 0
+        if new_username_count == self.pu.get_num_of_tries():
+            print("You tried the wrong value too many times.")
+        else:
+            # collect input from user
+            try:
+                player_name = input("Please type the new player's username")
+            except ValueError as e:
+                new_username_count += 1
+                print("Incorrect input! Please type the new player's username")
+        # can add some username rules here
+        return player_name
+
     def add_players(self, new_player_name):
         current_players = []
         if not isinstance(new_player_name, str):
@@ -83,7 +121,8 @@ class Game:
 
     def dealer_turn(self):
         number_of_cards = len(self.dealer.get_hand())
-        self.dealer.show_n_cards(number_of_cards)
+        if number_of_cards > 0:
+            self.dealer.show_n_cards(number_of_cards-1)
         if min(self.score_dict.values()) > 21:
             print("The dealer won as all players had scores over 21.\n")
         else:
