@@ -40,6 +40,7 @@ class Game:
         new_user_input_count = 0
         new_player_flag = True
         p_list = self.get_players()
+        new_player_decision = -1
         while new_player_flag:
             if new_user_input_count < self.pu.get_num_of_tries():
                 new_player_decision = -1
@@ -62,17 +63,19 @@ class Game:
 
     def request_player_name(self):
         new_username_count = 0
+        new_player_name = ''
         if new_username_count == self.pu.get_num_of_tries():
             print("You tried the wrong value too many times.")
         else:
             # collect input from user
             try:
-                player_name = input("Please type the new player's username")
+                new_player_name = input("Please type the new player's username")
             except ValueError as e:
                 new_username_count += 1
                 print("Incorrect input! Please type the new player's username")
         # can add some username rules here
-        return player_name
+        if new_player_name != '':
+            return new_player_name
 
     def add_players(self, new_player_name):
         current_players = []

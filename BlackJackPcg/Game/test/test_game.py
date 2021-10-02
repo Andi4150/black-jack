@@ -8,7 +8,6 @@ import mock
 import io
 import sys
 
-
 # from BlackJackPcg.Utils import CardUtils
 from BlackJackPcg.Utils import CardUtils
 
@@ -77,6 +76,9 @@ class TestGame(TestCase):
             self.assertTrue(True)
         else:
             self.assertTrue(False)
+
+    def test_new_player_decision(self):
+        pass
 
     def test_player_turn(self):
         # arrange
